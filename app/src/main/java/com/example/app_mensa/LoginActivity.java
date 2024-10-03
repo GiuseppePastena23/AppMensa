@@ -1,52 +1,41 @@
 package com.example.app_mensa;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
-
 
 public class LoginActivity extends AppCompatActivity {
 
+    private EditText emailEditText, passwordEditText;
     private Button loginButton;
-    private EditText email;
-    private EditText password;
-
-    private void initUI() {
-        loginButton = findViewById(R.id.login_button);
-        email = findViewById(R.id.email_edit);
-        password = findViewById(R.id.password_edit);
-    }
-
-    private void login(String email, String password){
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.putExtra("email", email);
-        intent.putExtra("password", password);
-        startActivity(intent);
-        finish();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.login), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        initUI();
-        loginButton.setOnClickListener(v -> login(email.getText().toString(), password.getText().toString()));
-    }
 
+        emailEditText = findViewById(R.id.email);
+        passwordEditText = findViewById(R.id.password);
+        loginButton = findViewById(R.id.loginButton);
+
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = emailEditText.getText().toString();
+                String password = passwordEditText.getText().toString();
+
+                if (email.isEmpty() || password.isEmpty()) {
+                    Toast.makeText(LoginActivity.this, "Riempi tutti i campi", Toast.LENGTH_SHORT).show();
+                } else if (email.equals("admin@example.com") && password.equals("admin123")) {
+                    Toast.makeText(LoginActivity.this, "Login effettuato con successo", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Email o password errate", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
 }

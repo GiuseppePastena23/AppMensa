@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">App_Mensa</string>
+    <string name="app_name">App Mensa</string>
+    <string name="logo_desc">Logo</string>
 </resources>
