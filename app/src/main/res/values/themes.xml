@@ -6,4 +6,6 @@
     </style>
 
     <style name="Theme.App_Mensa" parent="Base.Theme.App_Mensa" />
+
+    <color name="logo_color">#000000</color>
 </resources>
