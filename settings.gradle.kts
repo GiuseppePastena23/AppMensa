@@ -19,6 +19,9 @@ dependencyResolutionManagement {
     }
 }
 
+
+
+
 rootProject.name = "App_Mensa"
 include(":app")
  

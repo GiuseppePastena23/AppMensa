@@ -3,13 +3,81 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/home">
+    android:id="@+id/home"
+    >
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/welcome_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Benvenuto, User"
+            android:textSize="25dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="249dp"
-        android:layout_height="228dp"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="146dp"
-        tools:layout_editor_absoluteY="289dp" />
+            >
+        </TextView>
+        <TextView
+            android:id="@+id/saldo_text"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/welcome_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SALDO : 0.00">
+
+        </TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/saldo_text"
+            android:text="QR"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textSize="25dp"></TextView>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="Home"
+      ></Button>
+        <Button
+            android:id="@+id/wallet_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:text="Wallet"
+            ></Button>
+        <Button
+            android:id="@+id/settings_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:text="Settings"
+            ></Button>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+
+            android:text="MENU"
+            android:layout_marginTop="640dp"
+            ></Button>
+
+        <ImageView
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/qr"></ImageView>
+
+    </RelativeLayout>
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
+

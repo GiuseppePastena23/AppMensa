@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/wallet">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="100dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="100dp"
+            android:text="IL TUO SALDO"
+            android:textSize="20dp"></TextView>
+        <TextView
+            android:id="@+id/saldo_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.00"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textSize="50dp">
+
+        </TextView>
+        <Button
+            android:id="@+id/add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Aggiungi"
+            android:layout_alignParentBottom="true"></Button>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cronologia"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"></Button>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

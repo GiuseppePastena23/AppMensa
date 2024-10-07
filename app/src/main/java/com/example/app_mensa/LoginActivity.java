@@ -1,5 +1,6 @@
 package com.example.app_mensa;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
         associateUI();
     }
 
+
     private void associateUI() {
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.password);
@@ -30,16 +32,23 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(view -> loginAction());
     }
 
-    private void loginAction() {
+    private boolean loginAction() {
         String email = emailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
 
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(LoginActivity.this, "Riempi tutti i campi", Toast.LENGTH_SHORT).show();
-        } else if (email.equals("admin@example.com") && password.equals("admin123")) {
+            return false;
+        } else if (email.equals("admin") && password.equals("admin")) {
             Toast.makeText(LoginActivity.this, "Login effettuato con successo", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, HomeActivity.class);
+
+            startActivity(intent);
+            finish();
+            return true;
         } else {
             Toast.makeText(LoginActivity.this, "Email o password errate", Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 
