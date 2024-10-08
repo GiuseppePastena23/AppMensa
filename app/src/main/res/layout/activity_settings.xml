@@ -21,13 +21,14 @@
                 android:id="@+id/user_icon"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:src="@drawable/user_icon_placeholder"></ImageView>
+                android:src="@drawable/user_icon_placeholder" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="Giuseppe Pastena"
-                android:textSize="30dp"></TextView>
+                android:textSize="30dp" />
 
         </LinearLayout>
         <LinearLayout

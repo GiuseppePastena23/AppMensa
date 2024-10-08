@@ -22,10 +22,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".LoginActivity" android:label="App Mensa - Login"/>
-        <activity android:name=".HomeActivity" android:label="App Mensa - Home" />
-        <activity android:name=".WalletActivity" android:label="App Mensa - Wallet"/>
-        <activity android:name=".SettingsActivity" android:label="App Mensa - Settings"/>
+        <activity android:name=".LoginActivity" android:label="Login"/>
+        <activity android:name=".HomeActivity" android:label="Home" />
+        <activity android:name=".WalletActivity" android:label="Wallet"/>
+        <activity android:name=".SettingsActivity" android:label="Settings"/>
+        <activity android:name=".MenuActivity" android:label="Menu"/>
 
     </application>
 

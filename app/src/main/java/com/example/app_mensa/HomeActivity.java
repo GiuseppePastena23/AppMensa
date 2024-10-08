@@ -16,15 +16,18 @@ public class HomeActivity extends AppCompatActivity {
     private TextView text;
     private Button walletBtn;
     private Button settingsBtn;
+    private Button menuBtn;
 
     private void associateUI() {
         // ASSIGN VARIABLES
         walletBtn = findViewById(R.id.wallet_btn);
         settingsBtn = findViewById(R.id.settings_btn);
+        menuBtn = findViewById(R.id.menu_btn);
 
         // LISTENERS
         settingsBtn.setOnClickListener(v -> openSettings());
         walletBtn.setOnClickListener(v -> openWallet());
+        menuBtn.setOnClickListener(v -> openMenu());
     }
 
     @Override
@@ -45,6 +48,9 @@ public class HomeActivity extends AppCompatActivity {
         associateUI();
     }
 
+
+
+
     // BUTTONS FUNCTIONS
     private void openWallet(){
         Intent intent = new Intent(this, WalletActivity.class);
@@ -53,6 +59,11 @@ public class HomeActivity extends AppCompatActivity {
 
     private void openSettings(){
         Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    private void openMenu(){
+        Intent intent = new Intent(this, MenuActivity.class);
         startActivity(intent);
     }
 }
