@@ -3,6 +3,7 @@ package com.example.app_mensa;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,16 +11,30 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class SettingsActivity extends AppCompatActivity
-{
+public class SettingsActivity extends AppCompatActivity  {
     private Button exitBtn;
+    private Button anagraficaBtn;
+    private Button cardsBtn;
+    private Button statusBtn;
+    private Button authBtn;
+
+
 
     private void associateUI(){
         // ASSIGN VARIABLES
         exitBtn = findViewById(R.id.exit_btn);
+        anagraficaBtn = findViewById(R.id.anagrafica_btn);
+        cardsBtn = findViewById(R.id.cards_btn);
+        statusBtn = findViewById(R.id.status_btn);
+        authBtn = findViewById(R.id.auth_btn);
+
 
         // LISTENERS
         exitBtn.setOnClickListener(v -> doExit());
+        anagraficaBtn.setOnClickListener(v -> openAnagrafica());
+        cardsBtn.setOnClickListener(v -> openCards());
+        statusBtn.setOnClickListener(v -> openStatus());
+        authBtn.setOnClickListener(v -> openAuth());
     }
 
     @Override
@@ -45,4 +60,22 @@ public class SettingsActivity extends AppCompatActivity
         finish();
         // Rimuovere file di autenticazione
     }
+
+    private void openAnagrafica() {
+        Intent intent = new Intent(this, AnagraficaActivity.class);
+        startActivity(intent);
+    }
+
+    private void openCards() {
+        Toast.makeText(this, "not implemented", Toast.LENGTH_SHORT).show();
+    }
+
+    private void openStatus() {
+        Toast.makeText(this, "not implemented", Toast.LENGTH_SHORT).show();
+    }
+
+    private void openAuth() {
+        Toast.makeText(this, "not implemented", Toast.LENGTH_SHORT).show();
+    }
 }
+

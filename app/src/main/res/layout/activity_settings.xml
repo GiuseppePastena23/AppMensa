@@ -40,6 +40,7 @@
             >
 
             <Button
+                android:id="@+id/anagrafica_btn"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:text="Anagrafica"
@@ -48,6 +49,7 @@
             </Button>
 
             <Button
+                android:id="@+id/cards_btn"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:text="Gestione carte"
@@ -56,17 +58,19 @@
 
             </Button>
             <Button
+                android:id="@+id/status_btn"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:text="Stato Attivazione"
+                android:text="Stato Attivazione???"
                 android:layout_marginBottom="20dp"
                 >
 
             </Button>
             <Button
+                android:id="@+id/auth_btn"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:text="Autenticazione">
+                android:text="Autenticazione???">
 
 
             </Button>
@@ -77,8 +81,11 @@
                 android:layout_height="wrap_content"
                 android:text="Esci"
                 android:backgroundTint="#C80C0C"
+                android:textColor="#FFFFFF"
                 android:layout_marginTop="50dp"
-                android:layout_gravity="center_horizontal"></Button>
+                android:layout_gravity="center_horizontal">
+
+            </Button>
         </LinearLayout>
 </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

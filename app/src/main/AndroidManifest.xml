@@ -27,6 +27,7 @@
         <activity android:name=".WalletActivity" android:label="Wallet"/>
         <activity android:name=".SettingsActivity" android:label="Settings"/>
         <activity android:name=".MenuActivity" android:label="Menu"/>
+        <activity android:name=".AnagraficaActivity" android:label="Anagrafica"/>
 
     </application>
 

@@ -8,6 +8,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
@@ -18,6 +19,7 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         associateUI();
@@ -32,24 +34,24 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(view -> loginAction());
     }
 
-    private boolean loginAction() {
+    private void loginAction() {
         String email = emailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
 
         if (email.isEmpty() || password.isEmpty()) {
             Toast.makeText(LoginActivity.this, "Riempi tutti i campi", Toast.LENGTH_SHORT).show();
-            return false;
         } else if (email.equals("admin") && password.equals("admin")) {
             Toast.makeText(LoginActivity.this, "Login effettuato con successo", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, HomeActivity.class);
-
-            startActivity(intent);
-            finish();
-            return true;
+            // SUCCESS
         } else {
             Toast.makeText(LoginActivity.this, "Email o password errate", Toast.LENGTH_SHORT).show();
-            return false;
         }
+
+        // TODO: debug fast login (remove here and bring up)
+        Toast.makeText(LoginActivity.this, "FAST LOGIN DEBUG", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 }
