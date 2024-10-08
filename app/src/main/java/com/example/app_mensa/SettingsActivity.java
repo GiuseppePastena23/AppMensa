@@ -14,6 +14,14 @@ public class SettingsActivity extends AppCompatActivity
 {
     private Button exitBtn;
 
+    private void associateUI(){
+        // ASSIGN VARIABLES
+        exitBtn = findViewById(R.id.exit_btn);
+
+        // LISTENERS
+        exitBtn.setOnClickListener(v -> doExit());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,11 +33,11 @@ public class SettingsActivity extends AppCompatActivity
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        exitBtn = findViewById(R.id.exit_btn);
-        exitBtn.setOnClickListener(v -> doExit());
 
+        associateUI();
     }
 
+    // BUTTONS FUNCTIONS
     private void doExit(){
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

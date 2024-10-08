@@ -17,6 +17,16 @@ public class HomeActivity extends AppCompatActivity {
     private Button walletBtn;
     private Button settingsBtn;
 
+    private void associateUI() {
+        // ASSIGN VARIABLES
+        walletBtn = findViewById(R.id.wallet_btn);
+        settingsBtn = findViewById(R.id.settings_btn);
+
+        // LISTENERS
+        settingsBtn.setOnClickListener(v -> openSettings());
+        walletBtn.setOnClickListener(v -> openWallet());
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,12 +41,11 @@ public class HomeActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        walletBtn = findViewById(R.id.wallet_btn);
-        settingsBtn = findViewById(R.id.settings_btn);
-        settingsBtn.setOnClickListener(v -> openSettings());
-        walletBtn.setOnClickListener(v -> openWallet());
+
+        associateUI();
     }
 
+    // BUTTONS FUNCTIONS
     private void openWallet(){
         Intent intent = new Intent(this, WalletActivity.class);
         startActivity(intent);

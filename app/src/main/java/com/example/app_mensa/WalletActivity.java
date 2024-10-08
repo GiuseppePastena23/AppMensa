@@ -16,6 +16,16 @@ public class WalletActivity extends AppCompatActivity {
     private float saldo = 0.0f;
     private TextView saldoText;
     private Button addBtn;
+
+    private void associateUI(){
+        // ASSIGN VARIABLES
+        saldoText = findViewById(R.id.saldo_text);
+        saldoText.setText(String.valueOf(saldo));
+        addBtn = findViewById(R.id.add_button);
+
+        // LISTENERS
+        addBtn.setOnClickListener(v -> addMoney(1000.5232f));}
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,12 +37,10 @@ public class WalletActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        saldoText = findViewById(R.id.saldo_text);
-        saldoText.setText(String.valueOf(saldo));
-        addBtn = findViewById(R.id.add_button);
-        addBtn.setOnClickListener(v -> addMoney(1000.5232f));
+        associateUI();
     }
 
+    // BUTTONS FUNCTIONS
     private void addMoney(float value) {
         saldo += value;
         saldoText.setText(String.valueOf(saldo));
