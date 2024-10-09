@@ -28,7 +28,9 @@
         <activity android:name=".SettingsActivity" android:label="Settings"/>
         <activity android:name=".MenuActivity" android:label="Menu"/>
         <activity android:name=".AnagraficaActivity" android:label="Anagrafica"/>
-
+        <activity android:name=".ProvaActivity" android:label="Prova"/>
     </application>
+
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
 
 </manifest>
