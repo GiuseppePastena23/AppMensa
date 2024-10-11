@@ -13,7 +13,7 @@ mysql = MySQL(app)
 def hello_world():
     return 'Hello, World!'
 
-@app.route('/data', methods=['GET'])
+@app.route('/data/', methods=['GET'])
 def get_data():
     cur = mysql.connection.cursor()
     cur.execute('''SELECT * FROM users''')
@@ -29,15 +29,6 @@ def get_data_by_id(id):
     cur.close()
     return jsonify(data)
 
-@app.route('/data', methods=['GET'])
-def add_data():
-    cur = mysql.connection.cursor()
-    name = request.json['name']
-    age = request.json['age']
-    cur.execute('''INSERT INTO users (name, age) VALUES (%s, %s)''', (name, age))
-    mysql.connection.commit()
-    cur.close()
-    return jsonify({'message': 'Data added successfully'})
 
 @app.route('/data/<int:id>', methods=['GET'])
 def update_data(id):
@@ -65,3 +56,6 @@ def login():
         return jsonify({"status": "success", "user": user}), 200
     else:
         return jsonify({"status": "fail", "message": "Invalid email or password"}), 401
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
