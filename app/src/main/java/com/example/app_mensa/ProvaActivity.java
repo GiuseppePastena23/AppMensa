@@ -1,48 +1,48 @@
 package com.example.app_mensa;
+import com.example.app_mensa.dao.User;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.webkit.WebView;
-
-import androidx.activity.EdgeToEdge;
+import android.widget.Toast;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProvaActivity extends AppCompatActivity {
 
-    private WebView webView;
-
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        // EdgeToEdge.enable(this);
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_prova);
+        setContentView(R.layout.activity_main);
 
-        webView = findViewById(R.id.web_view);
-        String pdf = "https://www.adisurcampania.it/sites/default/files/2024-10/Pranzo_4.pdf";
-        webView.getSettings().setJavaScriptEnabled(true);
-        //webView.loadUrl("https://www.adisurcampania.it/sites/default/files/2024-10/Pranzo_4.pdf");
-        /*
-        for (int i = 0; i < 10; i++) {
-        }
-        webView.loadUrl("https://drive.google.com/viewerng/viewer?embedded=true&url=" + pdf);
-        Log.d("caricamentosito", "URL:" + webView.getUrl());
-        webView.get
-        */
+        ApiService apiService = RetrofitClient.getApiService();
+        Call<List<User>> call = apiService.getUsers();
+        Log.d("MainActivity", "URL: " + call.request().url());
 
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                System.out.println(response.body());
+                if (response.isSuccessful() && response.body() != null) {
 
+                    List<User> users = response.body();
+                    for (User user : users) {
+                        Log.d("MainActivity", "User: " + user.getNome());
+                    }
+                } else {
+                    Toast.makeText(ProvaActivity.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
 
-        //webView.loadUrl("https://www.google.com");
-
-
-        String url = "https://www.adisurcampania.it/sites/default/files/2024-10/Pranzo_4.pdf";
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-        startActivity(intent);
-        finish();
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Toast.makeText(ProvaActivity.this, "Failed to load data", Toast.LENGTH_SHORT).show();
+                Log.e("MainActivity", t.getMessage());
+                t.printStackTrace();
+            }
+        });
     }
 }

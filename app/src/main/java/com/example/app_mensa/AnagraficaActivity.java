@@ -36,7 +36,7 @@ public class AnagraficaActivity extends AppCompatActivity {
     }
 
     private User getUserInfo() {
-        return new User(1, "Rossi", "Rossi", "RSSMRA556JSAIUDAS", new Date(2000,01,01), "mario@mail.com",
+        return new User(1, "Rossi", "Rossi", "RSSMRA556JSAIUDAS", "mario@mail.com",
                 "asdf", "123451234", "Studente", 10.4f);
     }
 
