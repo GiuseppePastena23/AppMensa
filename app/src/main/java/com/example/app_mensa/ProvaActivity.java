@@ -30,6 +30,8 @@ public class ProvaActivity extends AppCompatActivity {
 
                     List<User> users = response.body();
                     for (User user : users) {
+                        Toast.makeText(ProvaActivity.this, user.getNome(), Toast.LENGTH_SHORT).show();
+
                         Log.d("MainActivity", "User: " + user.getNome());
                     }
                 } else {
@@ -39,6 +41,7 @@ public class ProvaActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
+
                 Toast.makeText(ProvaActivity.this, "Failed to load data", Toast.LENGTH_SHORT).show();
                 Log.e("MainActivity", t.getMessage());
                 t.printStackTrace();

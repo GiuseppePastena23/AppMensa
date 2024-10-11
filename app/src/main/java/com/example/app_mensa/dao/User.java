@@ -1,28 +1,26 @@
 package com.example.app_mensa.dao;
 
-import java.sql.Date;
-
-public class User {
+public class User  {
     private int id;
     private String cf;
     private String nome;
     private String cognome;
     private String email;
     private String password;
-    private String phone;
     private String status;
-    private float credit;
+    private String telefono;
+    private float credito;
 
-    public User(int id, String nome, String cognome, String cf, String email, String password, String phone, String status, float credit) {
+    public User(int id, String nome, String cognome, String cf, String email, String password, String telefono, String status, float credito) {
         this.id = id;
         this.nome = nome;
         this.cognome = cognome;
         this.cf = cf;
         this.email = email;
         this.password = password;
-        this.phone = phone;
+        this.telefono = telefono;
         this.status = status;
-        this.credit = credit;
+        this.credito = credito;
     }
 
     public int getId() {
@@ -73,12 +71,12 @@ public class User {
         this.password = password;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public String getStatus() {
@@ -89,11 +87,11 @@ public class User {
         this.status = status;
     }
 
-    public float getCredit() {
-        return credit;
+    public float getCredito() {
+        return credito;
     }
 
-    public void setCredit(float credit) {
-        this.credit = credit;
+    public void setCredito(float credito) {
+        this.credito = credito;
     }
 }

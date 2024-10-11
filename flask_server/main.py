@@ -14,12 +14,19 @@ def hello_world():
     return 'Hello, World!'
 
 @app.route('/data/', methods=['GET'])
-def get_data():
+def get_all_users():
     cur = mysql.connection.cursor()
-    cur.execute('''SELECT * FROM users''')
-    data = cur.fetchall()
+    cur.execute('SELECT * FROM users')
+    rows = cur.fetchall()
+    
+    if not rows:
+        return jsonify({"error": "No data found"}), 404
+    
+    columns = [desc[0] for desc in cur.description]
+    users_list = [dict(zip(columns, row)) for row in rows]
+    
     cur.close()
-    return jsonify(data)
+    return jsonify(users_list)
 
 @app.route('/data/<int:id>', methods=['GET'])
 def get_data_by_id(id):
