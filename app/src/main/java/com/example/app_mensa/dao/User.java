@@ -4,22 +4,20 @@ import java.sql.Date;
 
 public class User {
     private int id;
+    private String cf;
     private String nome;
     private String cognome;
-    private String cf;
-    private Date ddn;
     private String email;
     private String password;
     private String phone;
     private String status;
     private float credit;
 
-    public User(int id, String nome, String cognome, String cf, Date ddn, String email, String password, String phone, String status, float credit) {
+    public User(int id, String nome, String cognome, String cf, String email, String password, String phone, String status, float credit) {
         this.id = id;
         this.nome = nome;
         this.cognome = cognome;
         this.cf = cf;
-        this.ddn = ddn;
         this.email = email;
         this.password = password;
         this.phone = phone;
@@ -57,14 +55,6 @@ public class User {
 
     public void setCf(String cf) {
         this.cf = cf;
-    }
-
-    public Date getDdn() {
-        return ddn;
-    }
-
-    public void setDdn(Date ddn) {
-        this.ddn = ddn;
     }
 
     public String getEmail() {

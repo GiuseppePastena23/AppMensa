@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App_Mensa"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
@@ -29,6 +30,9 @@
         <activity android:name=".MenuActivity" android:label="Menu"/>
         <activity android:name=".AnagraficaActivity" android:label="Anagrafica"/>
         <activity android:name=".ProvaActivity" android:label="Prova"/>
+        <activity android:name=".ProvaActivity1" android:label="Prova"/>
+
+
     </application>
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
