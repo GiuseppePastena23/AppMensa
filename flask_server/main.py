@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
 from flask_mysqldb import MySQL
+import hashlib
 
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = '172.26.173.12'
@@ -47,3 +48,20 @@ def update_data(id):
     mysql.connection.commit()
     cur.close()
     return jsonify({'message': 'Data updated successfully'})
+
+@app.route('/login', methods=['POST'])
+def login():
+    email = request.json.get('email')
+    password = request.json.get('password')
+
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM users WHERE email = %s', (email,))
+    user = cur.fetchone()
+    cur.close()
+
+    if user and user['password'] == hashed_password:
+        return jsonify({"status": "success", "user": user}), 200
+    else:
+        return jsonify({"status": "fail", "message": "Invalid email or password"}), 401
