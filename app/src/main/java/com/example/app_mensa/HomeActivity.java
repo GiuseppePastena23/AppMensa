@@ -11,15 +11,21 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class HomeActivity extends AppCompatActivity {
+import com.example.app_mensa.dao.User;
 
-    private TextView text;
+public class HomeActivity extends AppCompatActivity {
+    private SharedPreferencesManager sharedPreferencesManager;
+
+    private User user;
+
+    private TextView welcomeText;
     private Button walletBtn;
     private Button settingsBtn;
     private Button menuBtn;
 
     private void associateUI() {
         // ASSIGN VARIABLES
+        welcomeText = findViewById(R.id.welcome_text);
         walletBtn = findViewById(R.id.wallet_btn);
         settingsBtn = findViewById(R.id.settings_btn);
         menuBtn = findViewById(R.id.menu_btn);
@@ -28,16 +34,18 @@ public class HomeActivity extends AppCompatActivity {
         settingsBtn.setOnClickListener(v -> openSettings());
         walletBtn.setOnClickListener(v -> openWallet());
         menuBtn.setOnClickListener(v -> openMenu());
+
+        // SET TEXT
+        welcomeText.append(user.getNome() + " " + user.getCognome());
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        Intent intent = getIntent();
+        sharedPreferencesManager = new SharedPreferencesManager(this);
+        user = sharedPreferencesManager.getUser();
 
-        String email = intent.getStringExtra("email");
-        String password = intent.getStringExtra("password");
         setContentView(R.layout.activity_home);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.home), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

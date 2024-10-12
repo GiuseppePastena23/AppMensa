@@ -12,12 +12,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class SettingsActivity extends AppCompatActivity  {
+    private SharedPreferencesManager sharedPreferencesManager;
+
     private Button exitBtn;
     private Button anagraficaBtn;
     private Button cardsBtn;
     private Button statusBtn;
     private Button authBtn;
-
 
 
     private void associateUI(){
@@ -41,6 +42,7 @@ public class SettingsActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        sharedPreferencesManager = new SharedPreferencesManager(this);
 
         setContentView(R.layout.activity_settings);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.settings), (v, insets) -> {
@@ -54,11 +56,13 @@ public class SettingsActivity extends AppCompatActivity  {
 
     // BUTTONS FUNCTIONS
     private void doExit(){
+        // Rimuovere file di autenticazione
+        sharedPreferencesManager.clearEmail();
+
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish();
-        // Rimuovere file di autenticazione
     }
 
     private void openAnagrafica() {

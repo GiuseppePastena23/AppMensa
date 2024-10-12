@@ -1,6 +1,13 @@
 package com.example.app_mensa.dao;
 
-public class User  {
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.Serializable;
+
+public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int id;
     private String cf;
     private String nome;
@@ -10,6 +17,8 @@ public class User  {
     private String status;
     private String telefono;
     private float credito;
+
+    public User() {}
 
     public User(int id, String nome, String cognome, String cf, String email, String password, String telefono, String status, float credito) {
         this.id = id;
@@ -93,5 +102,34 @@ public class User  {
 
     public void setCredito(float credito) {
         this.credito = credito;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", cf='" + cf + '\'' +
+                ", nome='" + nome + '\'' +
+                ", cognome='" + cognome + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", status='" + status + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", credito=" + credito +
+                '}';
+    }
+
+    public static User createFromJSON(JSONObject json) throws JSONException {
+        int id = json.getInt("id");
+        String cf = json.getString("cf");
+        String nome = json.getString("nome");
+        String cognome = json.getString("cognome");
+        String email = json.getString("email");
+        String password = json.getString("password");
+        String status = json.getString("status");
+        String telefono = json.getString("telefono");
+        float credito = (float) json.getDouble("credito");
+
+        return new User(id, nome, cognome, cf, email, password, telefono, status, credito);
     }
 }

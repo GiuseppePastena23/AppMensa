@@ -3,48 +3,53 @@ import com.example.app_mensa.dao.User;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import java.util.List;
+import java.io.IOException;
+import java.util.HashMap;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import okhttp3.ResponseBody;
 
 public class ProvaActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Crea una HashMap per i parametri della richiesta
+        HashMap<String, String> loginData = new HashMap<>();
+        loginData.put("email", "mario.rossi@example.com");
+        loginData.put("password", "a");
+
+        // Ottieni un'istanza di Retrofit e il servizio API
         ApiService apiService = RetrofitClient.getApiService();
-        Call<List<User>> call = apiService.getUsers();
-        Log.d("MainActivity", "URL: " + call.request().url());
 
-        call.enqueue(new Callback<List<User>>() {
+        // Fai la richiesta di login
+        Call<ResponseBody> call = apiService.login(loginData);
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                System.out.println(response.body());
-                if (response.isSuccessful() && response.body() != null) {
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        // Stampa la risposta del server
+                        String responseBody = response.body().string();
+                        Log.d("Login Success", "Response: " + responseBody);
 
-                    List<User> users = response.body();
-                    for (User user : users) {
-                        Toast.makeText(ProvaActivity.this, user.getNome(), Toast.LENGTH_SHORT).show();
-
-                        Log.d("MainActivity", "User: " + user.getNome());
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 } else {
-                    Toast.makeText(ProvaActivity.this, "Error: " + response.code(), Toast.LENGTH_SHORT).show();
+                    // La richiesta non è andata a buon fine
+                    Log.e("Login Error", "Invalid credentials");
                 }
             }
 
             @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
-
-                Toast.makeText(ProvaActivity.this, "Failed to load data", Toast.LENGTH_SHORT).show();
-                Log.e("MainActivity", t.getMessage());
-                t.printStackTrace();
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                // Errore di rete o altro errore
+                Log.e("Login Failure", t.getMessage());
             }
         });
     }

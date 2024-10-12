@@ -1,11 +1,12 @@
 package com.example.app_mensa;
-import com.example.app_mensa.dao.User;
 
 import retrofit2.Call;
-import retrofit2.http.GET;
-import java.util.List;
+import retrofit2.http.Body;
+import retrofit2.http.POST;
+import java.util.Map;
+import okhttp3.ResponseBody;
 
 public interface ApiService {
-    @GET("data/")
-    Call<List<User>> getUsers();
+    @POST("/login")
+    Call<ResponseBody> login(@Body Map<String, String> loginData);
 }
