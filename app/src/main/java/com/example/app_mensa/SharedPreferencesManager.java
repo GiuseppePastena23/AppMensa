@@ -12,23 +12,7 @@ public class SharedPreferencesManager {
     private Gson gson = new Gson();
 
     public SharedPreferencesManager(Context context) {
-        this.sp = context.getSharedPreferences("user_data", Context.MODE_PRIVATE);
-    }
-
-    public void saveEmail(String email) {
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putString("email", email);
-        editor.apply();
-    }
-
-    public String getEmail() {
-        return sp.getString("email", null);
-    }
-
-    public void clearEmail() {
-        SharedPreferences.Editor editor = sp.edit();
-        editor.remove("email");
-        editor.apply();
+        this.sp = context.getSharedPreferences("user", Context.MODE_PRIVATE);
     }
 
     public void saveUser(User user) {

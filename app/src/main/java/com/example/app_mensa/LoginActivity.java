@@ -1,6 +1,7 @@
 package com.example.app_mensa;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -13,21 +14,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.app_mensa.dao.User;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.HashMap;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class LoginActivity extends AppCompatActivity {
-    private boolean debug = false;
+    private SharedPreferencesManager sharedPreferencesManager;
 
-    public User user = null;
+    private boolean debug = false;
 
     private EditText emailEditText, passwordEditText;
     private CheckBox biometricCheckbox;
@@ -37,17 +27,17 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
-
-        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
-        User user = sharedPreferencesManager.getUser();
-        if (user != null && user.getEmail() != null) {
-            handleSuccessfulLogin();
-        }
+        sharedPreferencesManager = new SharedPreferencesManager(this);
 
         setContentView(R.layout.activity_login);
         associateUI();
-    }
 
+        User savedUser = sharedPreferencesManager.getUser();
+        if (savedUser != null && savedUser.getEmail() != null && savedUser.getPassword() != null) {
+            networkLogin(savedUser.getEmail(), savedUser.getPassword());
+        }
+
+    }
 
     private void associateUI() {
         emailEditText = findViewById(R.id.email);
@@ -58,9 +48,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginAction() {
-        String email = emailEditText.getText().toString().trim();
-        String passwordChiara = passwordEditText.getText().toString().trim();
-
         // Gestione login di debug
         if (debug) {
             showToast("DEBUG FAST LOGIN");
@@ -68,75 +55,48 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
+        // Ottieni i dati inseriti dall'utente
+        String email = emailEditText.getText().toString().trim();
+        String passwordChiara = passwordEditText.getText().toString().trim();
         // Controlla che i campi non siano vuoti
-        if (email.isEmpty() || passwordChiara.isEmpty()) {
-            Toast.makeText(LoginActivity.this, "Riempi tutti i campi", Toast.LENGTH_SHORT).show();
+        if (email.isBlank() || passwordChiara.isBlank()) {
+            showToast("Riempi tutti i campi");
             return;
         }
+        String passwordCifrata = HashUtil.sha256(passwordChiara);
 
         // Esegui il login tramite rete
-        performNetworkLogin(email, passwordChiara);
+        networkLogin(email, passwordCifrata);
     }
-
-    private void performNetworkLogin(String email, String password) {
-        HashMap<String, String> loginData = new HashMap<>();
-        loginData.put("email", email);
-        loginData.put("password", password);
-
-        ApiService apiService = RetrofitClient.getApiService();
-        Call<ResponseBody> call = apiService.login(loginData);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    try {
-                        String responseBody = response.body().string();
-                        Log.d("Login Status", "Success: " + responseBody);
-                        JSONObject jsonObject = new JSONObject(responseBody);
-                        JSONObject userObject = jsonObject.getJSONObject("user");
-
-                        user = User.createFromJSON(userObject);
-                        Log.d("Login Status", "User: " + user.toString());
-
-                        if (biometricCheckbox.isChecked()) {
-                            saveUserData();
-                        }
-
-                        handleSuccessfulLogin();
-                    } catch (IOException | JSONException e) {
-                        Log.e("Login Error", "Error parsing response", e);
-                        showToast("Errore nella risposta del server.");
-                    }
-                } else {
-                    Log.e("Login Error", "Invalid credentials or server error: " + response.code());
-                    showToast("Email o password errate.");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("Login Failure", "Network or other error", t);
-                showToast("Errore di rete. Riprova più tardi.");
-            }
-        });
-    }
-
-    private void saveUserData() {
-        SharedPreferencesManager sharedPreferencesManager = new SharedPreferencesManager(this);
-        sharedPreferencesManager.saveUser(user);
-    }
-
-
 
     private void handleSuccessfulLogin() {
-        Toast.makeText(LoginActivity.this, "Login effettuato con successo", Toast.LENGTH_SHORT).show();
+        showToast("Login effettuato con successo");
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
         finish();
     }
 
+    private void networkLogin(String email, String password) {
+        QueryManager.doLogin(email, password, new LoginCallback() {
+            @Override
+            public void onSuccess(User user) {
+                if (biometricCheckbox.isChecked()) {
+                    sharedPreferencesManager.saveUser(user);
+                } else {
+                    sharedPreferencesManager.clearUser();
+                }
+                handleSuccessfulLogin();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                sharedPreferencesManager.clearUser();
+                showToast("Login fallito: " + errorMessage);
+            }
+        });
+    }
+
     private void showToast(String message) {
         Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
     }
-
 }

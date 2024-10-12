@@ -57,7 +57,7 @@ public class SettingsActivity extends AppCompatActivity  {
     // BUTTONS FUNCTIONS
     private void doExit(){
         // Rimuovere file di autenticazione
-        sharedPreferencesManager.clearEmail();
+        sharedPreferencesManager.clearUser();
 
         Intent intent = new Intent(this, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
