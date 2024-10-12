@@ -26,7 +26,7 @@ public class AnagraficaActivity extends AppCompatActivity {
         // EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_anagrafica);
-        user = getUserInfo();
+
         associateUI();
     }
 
@@ -35,9 +35,5 @@ public class AnagraficaActivity extends AppCompatActivity {
         // recyclerView.add
     }
 
-    private User getUserInfo() {
-        return new User(1, "Rossi", "Rossi", "RSSMRA556JSAIUDAS", "mario@mail.com",
-                "asdf", "123451234", "Studente", 10.4f);
-    }
 
 }

@@ -17,7 +17,7 @@ public class ProvaActivity1 extends AppCompatActivity {
         // EdgeToEdge.enable(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prova);
-
+        /*
         webView = findViewById(R.id.web_view);
         String pdf = "https://www.adisurcampania.it/sites/default/files/2024-10/Pranzo_4.pdf";
         webView.getSettings().setJavaScriptEnabled(true);
@@ -34,10 +34,11 @@ public class ProvaActivity1 extends AppCompatActivity {
 
         //webView.loadUrl("https://www.google.com");
 
-
+        /*
         String url = "https://www.adisurcampania.it/sites/default/files/2024-10/Pranzo_4.pdf";
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
         finish();
+        */
     }
 }

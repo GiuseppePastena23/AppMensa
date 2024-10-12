@@ -1,3 +1,4 @@
+drop database mensadb;
 create database if not exists mensadb;
 use mensadb;
 
@@ -10,7 +11,8 @@ CREATE TABLE IF NOT EXISTS users (
     password CHAR(64) NOT NULL,
     status ENUM('studente', 'lavoratore', 'docente', 'dottorando') NOT NULL,
     telefono VARCHAR(20),
-    credito FLOAT DEFAULT 0
+    credito FLOAT DEFAULT 0,
+    tmp_code CHAR(32) NOT NULL DEFAULT 'new'
 );
 
 CREATE TABLE IF NOT EXISTS transazioni (
@@ -25,10 +27,10 @@ CREATE TABLE IF NOT EXISTS transazioni (
 
 INSERT INTO users (cf, nome, cognome, email, password, status, telefono, credito)
 VALUES
-('RSSMRA85M01H501Z', 'Mario', 'Rossi', 'mario.rossi@example.com', '5d41402abc4b2a76b9719d911017c592', 'studente', '1234567890', 0),
-('VRDLGI92A01F205Z', 'Luigi', 'Verdi', 'luigi.verdi@example.com', '7b52009b64fd0a2a49e6d8a939753077792b0554', 'docente', '0987654321', 0),
-('BNCLRA80M01E204Q', 'Lara', 'Bianchi', 'lara.bianchi@example.com', 'e99a18c428cb38d5f260853678922e03', 'lavoratore', '3456781234', 0),
-('DTTFRN90A01C123H', 'Franco', 'Dotti', 'franco.dotti@example.com', '6c97424dc92f14ae78f8e200e3ef2fd3', 'dottorando', '9876543210', 0);
+('RSSMRA85M01H501Z', 'Mario', 'Rossi', 'm.r', 'ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb', 'studente', '1234567890', 0),
+('VRDLGI92A01F205Z', 'Luigi', 'Verdi', 'l.v', 'ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb', 'docente', '0987654321', 0),
+('BNCLRA80M01E204Q', 'Lara', 'Bianchi', 'l.b', 'ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb', 'lavoratore', '3456781234', 0),
+('DTTFRN90A01C123H', 'Franco', 'Dotti', 'f.d', 'ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb', 'dottorando', '9876543210', 0);
 
 
 INSERT INTO transazioni (user_id, importo, datetime, modalita)
