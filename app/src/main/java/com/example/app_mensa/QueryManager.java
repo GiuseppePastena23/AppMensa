@@ -17,41 +17,6 @@ import retrofit2.Response;
 
 public class QueryManager {
 
-    public static void getQr(int id, LoginCallback callback) {
-        ApiService apiService = RetrofitClient.getApiService();
-        Call<ResponseBody> call = apiService.getQr(id);
-
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    ResponseBody qrData = response.body();
-
-                    if (qrData != null) {
-                        try {
-                            String qrCodeString = qrData.string(); // Convert to String
-                            Log.d("QR", qrCodeString);
-                            callback.onSuccess(); // Notify success
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                            callback.onError("Failed to parse QR code data."); // Notify error
-                        }
-                    } else {
-                        callback.onError("QR data is null.");
-                    }
-                } else {
-                    callback.onError("Error: " + response.code() + " " + response.message()); // Notify error
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                t.printStackTrace();
-                callback.onError("Network request failed: " + t.getMessage()); // Notify error
-            }
-        });
-    }
-
     public static void doLogin(String email, String password, LoginCallback callback) {
         HashMap<String, String> loginData = new HashMap<>();
         loginData.put("email", email);
