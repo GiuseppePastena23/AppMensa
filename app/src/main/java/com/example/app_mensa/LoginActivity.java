@@ -138,7 +138,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void handleSuccessfulLogin() {
         showToast("Login effettuato con successo");
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, ProvaActivity.class);
         startActivity(intent);
         finish();
     }

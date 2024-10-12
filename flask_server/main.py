@@ -67,12 +67,26 @@ def login():
     else:
         return jsonify({"status": "fail", "message": "Invalid email or password"}), 401
 
-@app.route('/qr?id=<int:id>', methods['GET'])
+@app.route('/qr/<int:id>', methods=['GET'])
 def get_qr(id):
-    random_string = generate_code(generate_random_string())
+    update_tmp_code(id)
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT tmp_code FROM users WHERE id = %s', (id,))
+    data = cur.fetchone()  # Use fetchone() to get a single row
+    cur.close()
+    if data:
+        tmp_code = data[0]  # Extract the tmp_code value directly
+        return tmp_code  # Return the tmp_code directly
+    else:
+        return jsonify({"error": "User not found"}), 404  # Handle case where no user is found
+
+def update_tmp_code(id):
+    random_string = generate_random_string()
     cur = mysql.connection.cursor()
     cur.execute('''UPDATE users SET tmp_code = %s WHERE id = %s''', (random_string, id))
-
+    mysql.connection.commit()
+    cur.close()
+    
 def generate_random_string():
     characters = string.ascii_letters + string.digits
     random_string = ''.join(random.choice(characters) for _ in range(32))

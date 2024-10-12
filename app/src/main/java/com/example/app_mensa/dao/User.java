@@ -140,7 +140,7 @@ public class User implements Serializable {
         String status = json.getString("status");
         String telefono = json.getString("telefono");
         float credito = (float) json.getDouble("credito");
-        String tmpCode = json.optString("tmpCode", null);
+        String tmpCode = json.getString("tmp_code");
 
         return new User(id, nome, cognome, cf, email, password, telefono, status, credito, tmpCode);
     }
