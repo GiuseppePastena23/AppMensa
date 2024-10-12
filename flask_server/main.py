@@ -1,5 +1,7 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_mysqldb import MySQL
+import MySQLdb
+import random, string
 import hashlib
 
 app = Flask(__name__)
@@ -52,17 +54,29 @@ def login():
     email = request.json.get('email')
     password = request.json.get('password')
 
-    hashed_password = hashlib.sha256(password.encode()).hexdigest()
-
-    cur = mysql.connection.cursor()
+    if not email or not password:
+        return jsonify({"status": "fail", "message": "Email or password missing"}), 400
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cur.execute('SELECT * FROM users WHERE email = %s', (email,))
     user = cur.fetchone()
     cur.close()
 
-    if user and user['password'] == hashed_password:
+    # Check if the user exists and compare hashed passwords
+    if user and user['password'] == password:
         return jsonify({"status": "success", "user": user}), 200
     else:
         return jsonify({"status": "fail", "message": "Invalid email or password"}), 401
+
+@app.route('/qr?id=<int:id>', methods['GET'])
+def get_qr(id):
+    random_string = generate_code(generate_random_string())
+    cur = mysql.connection.cursor()
+    cur.execute('''UPDATE users SET tmp_code = %s WHERE id = %s''', (random_string, id))
+
+def generate_random_string():
+    characters = string.ascii_letters + string.digits
+    random_string = ''.join(random.choice(characters) for _ in range(32))
+    return random_string
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
