@@ -51,41 +51,33 @@ def update_data(id):
 
 @app.route('/login', methods=['POST'])
 def login():
+    
     email = request.json.get('email')
     password = request.json.get('password')
-
     if not email or not password:
         return jsonify({"status": "fail", "message": "Email or password missing"}), 400
+    update_tmp_code(email)
     cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cur.execute('SELECT * FROM users WHERE email = %s', (email,))
+    cur.execute('SELECT * FROM users WHERE email = %s AND password = %s', (email, password))
     user = cur.fetchone()
     cur.close()
+    
+    
 
-    # Check if the user exists and compare hashed passwords
-    if user and user['password'] == password:
+    if user:
         return jsonify({"status": "success", "user": user}), 200
     else:
         return jsonify({"status": "fail", "message": "Invalid email or password"}), 401
+    
+    
 
-@app.route('/qr/<int:id>', methods=['GET'])
-def get_qr(id):
-    update_tmp_code(id)
-    cur = mysql.connection.cursor()
-    cur.execute('SELECT tmp_code FROM users WHERE id = %s', (id,))
-    data = cur.fetchone()  # Use fetchone() to get a single row
-    cur.close()
-    if data:
-        tmp_code = data[0]  # Extract the tmp_code value directly
-        return tmp_code  # Return the tmp_code directly
-    else:
-        return jsonify({"error": "User not found"}), 404  # Handle case where no user is found
-
-def update_tmp_code(id):
+def update_tmp_code(email):
     random_string = generate_random_string()
     cur = mysql.connection.cursor()
-    cur.execute('''UPDATE users SET tmp_code = %s WHERE id = %s''', (random_string, id))
+    cur.execute('''UPDATE users SET tmp_code = %s WHERE email = %s''', (random_string, email))
     mysql.connection.commit()
     cur.close()
+    
     
 def generate_random_string():
     characters = string.ascii_letters + string.digits
