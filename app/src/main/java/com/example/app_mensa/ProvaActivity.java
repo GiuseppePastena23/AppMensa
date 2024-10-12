@@ -1,56 +1,77 @@
 package com.example.app_mensa;
-import com.example.app_mensa.dao.User;
+
+import androidx.biometric.BiometricManager;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
 
 import android.os.Bundle;
-import android.util.Log;
+import android.widget.Button;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import java.io.IOException;
-import java.util.HashMap;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import okhttp3.ResponseBody;
+
+import java.util.concurrent.Executor;
 
 public class ProvaActivity extends AppCompatActivity {
+
+    private Executor executor;
+    private BiometricPrompt biometricPrompt;
+    private BiometricPrompt.PromptInfo promptInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Crea una HashMap per i parametri della richiesta
-        HashMap<String, String> loginData = new HashMap<>();
-        loginData.put("email", "mario.rossi@example.com");
-        loginData.put("password", "a");
-
-        // Ottieni un'istanza di Retrofit e il servizio API
-        ApiService apiService = RetrofitClient.getApiService();
-
-        // Fai la richiesta di login
-        Call<ResponseBody> call = apiService.login(loginData);
-        call.enqueue(new Callback<ResponseBody>() {
+        executor = ContextCompat.getMainExecutor(this);
+        biometricPrompt = new BiometricPrompt(ProvaActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    try {
-                        // Stampa la risposta del server
-                        String responseBody = response.body().string();
-                        Log.d("Login Success", "Response: " + responseBody);
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    // La richiesta non è andata a buon fine
-                    Log.e("Login Error", "Invalid credentials");
-                }
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(getApplicationContext(), "Authentication error: " + errString, Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                // Errore di rete o altro errore
-                Log.e("Login Failure", t.getMessage());
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                Toast.makeText(getApplicationContext(), "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // Controlla se il dispositivo supporta la biometria o le credenziali del dispositivo (PIN/password/pattern)
+        BiometricManager biometricManager = BiometricManager.from(this);
+        switch (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
+            case BiometricManager.BIOMETRIC_SUCCESS:
+                // Biometria supportata e disponibile
+                promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                        .setTitle("Biometric Authentication")
+                        .setSubtitle("Please authenticate to continue")
+                        .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
+                        .build();
+                break;
+            case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
+            case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
+            case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
+                // Usa solo credenziali del dispositivo se la biometria non è disponibile o non configurata
+                promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                        .setTitle("Device Authentication")
+                        .setSubtitle("Authenticate using your device credentials")
+                        .setAllowedAuthenticators(BiometricManager.Authenticators.DEVICE_CREDENTIAL)
+                        .build();
+                break;
+            default:
+                // Gestisci il caso in cui non sia possibile autenticare l'utente
+                Toast.makeText(getApplicationContext(), "Authentication not supported", Toast.LENGTH_SHORT).show();
+                return;
+        }
+
+        // NONBUTTON.setOnClickListener(view -> biometricPrompt.authenticate(promptInfo));
     }
 }
