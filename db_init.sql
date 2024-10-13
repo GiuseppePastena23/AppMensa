@@ -1,4 +1,4 @@
-drop database mensadb;
+
 create database if not exists mensadb;
 use mensadb;
 
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS transazioni (
     user_id INT,
     importo FLOAT NOT NULL,
     datetime DATETIME DEFAULT CURRENT_TIMESTAMP,
-    modalita ENUM('ricarica con carta di credito', 'ricarica in contanti', 'pagamento alla mensa') NOT NULL,
+    modalita ENUM('ricarica con carta di credito', 'ricarica in contanti', 'pagamento alla mensa', 'debug') NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 

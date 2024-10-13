@@ -31,7 +31,8 @@
         <activity android:name=".AnagraficaActivity" android:label="Anagrafica"/>
         <activity android:name=".ProvaActivity" android:label="Prova"/>
         <activity android:name=".ProvaActivity1" android:label="Prova"/>
-
+        <activity android:name=".AddCreditActivity" android:label="AddCredit"/>
+        <activity android:name=".TransactionHistoryActivity" android:label="History"/>
 
     </application>
 

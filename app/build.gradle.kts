@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
+    implementation("com.paypal.sdk:paypal-android-sdk:2.16.0")
     implementation("com.journeyapps:zxing-android-embedded:4.3.0")
     implementation ("com.google.zxing:core:3.3.3")
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

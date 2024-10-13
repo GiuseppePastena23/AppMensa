@@ -24,10 +24,11 @@
                 android:src="@drawable/user_icon_placeholder" />
 
             <TextView
+                android:id="@+id/username_txt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:text="Giuseppe Pastena"
+                android:text="User"
                 android:textSize="30dp" />
 
         </LinearLayout>

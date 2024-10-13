@@ -49,7 +49,7 @@ public class ProvaActivity extends AppCompatActivity {
 
                             try {
                                 Bitmap qrCodeBitmap = generateQRCode(updatedUser.getTmpCode());
-                                textView.setText(updatedUser.getTmpCode());
+                                textView.setText(String.valueOf("Saldo Disponibile:\n" + updatedUser.getCredito()));
                                 qrCodeImageView.setImageBitmap(qrCodeBitmap);
                             } catch (WriterException e) {
                                 e.printStackTrace();
@@ -62,8 +62,8 @@ public class ProvaActivity extends AppCompatActivity {
                         }
                     });
                 }
-                // Ripeti il task ogni 10 secondi
-                handler.postDelayed(this, 10000);
+
+                handler.postDelayed(this, 5000);
             }
         };
 
@@ -84,12 +84,11 @@ public class ProvaActivity extends AppCompatActivity {
         BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeString, BarcodeFormat.QR_CODE, size, size);
         Bitmap bitmap = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888);
 
-        int greenColor = 0xFF00FF00; // Colore verde per i quadrati QR
-        int transparentColor = 0x00000000; // Trasparente per lo sfondo
-
+        int mainColor = 0xFF000000;
+        int bgColor = 0x000000;
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
-                bitmap.setPixel(x, y, bitMatrix.get(x, y) ? greenColor : transparentColor);
+                bitmap.setPixel(x, y, bitMatrix.get(x, y) ? mainColor: bgColor);
             }
         }
 

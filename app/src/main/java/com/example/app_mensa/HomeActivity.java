@@ -22,6 +22,7 @@ public class HomeActivity extends AppCompatActivity {
     private Button walletBtn;
     private Button settingsBtn;
     private Button menuBtn;
+    private Button qrBtn;
 
     private void associateUI() {
         // ASSIGN VARIABLES
@@ -29,15 +30,19 @@ public class HomeActivity extends AppCompatActivity {
         walletBtn = findViewById(R.id.wallet_btn);
         settingsBtn = findViewById(R.id.settings_btn);
         menuBtn = findViewById(R.id.menu_btn);
+        qrBtn = findViewById(R.id.qr_btn);
 
         // LISTENERS
         settingsBtn.setOnClickListener(v -> openSettings());
         walletBtn.setOnClickListener(v -> openWallet());
         menuBtn.setOnClickListener(v -> openMenu());
+        qrBtn.setOnClickListener(v -> openQr());
 
         // SET TEXT
         welcomeText.append(user.getNome() + " " + user.getCognome());
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +77,11 @@ public class HomeActivity extends AppCompatActivity {
 
     private void openMenu(){
         Intent intent = new Intent(this, MenuActivity.class);
+        startActivity(intent);
+    }
+
+    private void openQr() {
+        Intent intent = new Intent(this, ProvaActivity.class);
         startActivity(intent);
     }
 }
