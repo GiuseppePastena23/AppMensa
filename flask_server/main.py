@@ -4,6 +4,8 @@ import MySQLdb
 import random, string
 import hashlib
 import pandas as pd
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 
 
 app = Flask(__name__)
@@ -11,6 +13,7 @@ app.config['MYSQL_HOST'] = '172.26.173.12'
 app.config['MYSQL_USER'] = 'android'
 app.config['MYSQL_PASSWORD'] = 'android'
 app.config['MYSQL_DB'] = 'mensadb'
+tmp_code = "new"
 mysql = MySQL(app)
 
 @app.route('/')
@@ -122,8 +125,6 @@ def login():
         if not email or not password:
             return jsonify({"status": "fail", "message": "Email or password missing"}), 400
 
-        # Update temporary code
-        update_tmp_code(email)
 
         # Check for user credentials
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -139,17 +140,6 @@ def login():
     except Exception as e:
         print(f"Error in login: {e}")
         return jsonify({"status": "fail", "message": "An error occurred during login"}), 500
-
-
-def update_tmp_code(email):
-    try:
-        random_string = generate_random_string()
-        cur = mysql.connection.cursor()
-        cur.execute('''UPDATE users SET tmp_code = %s WHERE email = %s''', (random_string, email))
-        mysql.connection.commit()
-        cur.close()
-    except Exception as e:
-        print(f"Error updating temporary code: {e}")
 
 
 def generate_random_string():
@@ -193,7 +183,21 @@ def insert_users():
     insert_data()  # You can specify how many records to insert
     return "Data insertion completed.", 200"""
 
+async def modify_tmp_code():
+    global tmp_code
+    while True:
+        tmp_code = generate_random_string()
+        print(f"changed tmp_code to {tmp_code}")
+        await asyncio.sleep(10)
+
+async def tmp_code_changer():
+    with ThreadPoolExecutor() as executor:
+        loop= asyncio.get_running_loop()
+        await loop.run_in_executor(executor, asyncio.run, modify_tmp_code())
     
 if __name__ == "__main__":
     app.run(host="0.0.0.0")
+    asyncio.run(tmp_code_changer())
+
+
     
