@@ -6,6 +6,7 @@ import hashlib
 import pandas as pd
 import asyncio
 from concurrent.futures import ThreadPoolExecutor
+import threading
 
 
 app = Flask(__name__)
@@ -183,6 +184,10 @@ def insert_users():
     insert_data()  # You can specify how many records to insert
     return "Data insertion completed.", 200"""
 
+@app.route('/get_tmp', methods=['GET'])
+def get_tmp():
+    return jsonify({"tmpCode": tmp_code})
+
 async def modify_tmp_code():
     global tmp_code
     while True:
@@ -194,10 +199,18 @@ async def tmp_code_changer():
     with ThreadPoolExecutor() as executor:
         loop= asyncio.get_running_loop()
         await loop.run_in_executor(executor, asyncio.run, modify_tmp_code())
+
+def run_flask():
+    app.run(host="0.0.0.0")
+
     
 if __name__ == "__main__":
-    app.run(host="0.0.0.0")
+    
+    flask_thread = threading.Thread(target=run_flask)
+    flask_thread.start()
+
     asyncio.run(tmp_code_changer())
+    
 
 
     
