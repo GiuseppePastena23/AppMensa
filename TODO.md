@@ -3,9 +3,15 @@ forzare portrait
 adattamento light/dark theme
 
 ## primo avvio
-1. pagina di login con logo e due textbox e un bottone (email e password) (non mostrare la navbar bassa)
-potrebbe essere utile una checkbox con scritto "ABILITA LOGIN RAPIDO CON DATI BIOMETRICI"
+1. pulsante per forzare il check biometrico
 2. lingua
-3. qr code
+3. conferma pagamento avvenuto con polling
+4. invio notifiche quando si effettua una transazione o low money
+5. contatta l'assistenza
 
-invio notifiche quando si effettua una transazione (leggermente fine a se stesso)
+
+## idee
+- ricarica automatica del saldo sotto una soglia 
+- pagamento NFC con addetto (con il credito)
+- ritiro
+- cashback, raccolta punti
