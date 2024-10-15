@@ -6,18 +6,16 @@ import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.biometric.BiometricManager;
-import androidx.biometric.BiometricPrompt;
 
 import com.example.app_mensa.dao.User;
 
@@ -31,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText, passwordEditText;
     private CheckBox biometricCheckbox;
     private Button loginButton;
-
+    private ImageButton fingerprintButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,69 +40,22 @@ public class LoginActivity extends AppCompatActivity {
         associateUI();
         User savedUser = sharedPreferencesManager.getUser();
 
-        BiometricPrompt.PromptInfo promptInfo = null;
         if (savedUser != null && savedUser.getEmail() != null && savedUser.getPassword() != null) {
-            // Biometria
-            Executor executor = ContextCompat.getMainExecutor(this);
-            BiometricPrompt biometricPrompt = new BiometricPrompt(LoginActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
-                @Override
-                public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
-                    super.onAuthenticationError(errorCode, errString);
-                    Toast.makeText(getApplicationContext(), "Errore di autenticazione biometrica: " + errString, Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
-                    super.onAuthenticationSucceeded(result);
-                    Toast.makeText(getApplicationContext(), "Autenticazione biometrica riuscita", Toast.LENGTH_SHORT).show();
-                    networkLogin(savedUser.getEmail(), savedUser.getPassword());
-                }
-
-                @Override
-                public void onAuthenticationFailed() {
-                    super.onAuthenticationFailed();
-                    Toast.makeText(getApplicationContext(), "Authentication biometrica fallita", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            // Controlla se il dispositivo supporta la biometria o le credenziali del dispositivo (PIN/password/pattern)
-            BiometricManager biometricManager = BiometricManager.from(this);
-            switch (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)) {
-                case BiometricManager.BIOMETRIC_SUCCESS:
-                    // Biometria supportata e disponibile
-                    promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                            .setTitle("Biometric Authentication")
-                            .setSubtitle("Please authenticate to continue")
-                            .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
-                            .build();
-                    break;
-                case BiometricManager.BIOMETRIC_ERROR_NO_HARDWARE:
-                case BiometricManager.BIOMETRIC_ERROR_HW_UNAVAILABLE:
-                case BiometricManager.BIOMETRIC_ERROR_NONE_ENROLLED:
-                    // Usa solo credenziali del dispositivo se la biometria non è disponibile o non configurata
-                    promptInfo = new BiometricPrompt.PromptInfo.Builder()
-                            .setTitle("Device Authentication")
-                            .setSubtitle("Authenticate using your device credentials")
-                            .setAllowedAuthenticators(BiometricManager.Authenticators.DEVICE_CREDENTIAL)
-                            .build();
-                    break;
-                default:
-                    // Gestisci il caso in cui non sia possibile autenticare l'utente
-                    Toast.makeText(getApplicationContext(), "Authentication not supported", Toast.LENGTH_SHORT).show();
-            }
-            biometricPrompt.authenticate(promptInfo);
+            configureBiometricAuthentication(savedUser);
+        } else {
+            fingerprintButton.setVisibility(View.INVISIBLE);
         }
-
     }
-
 
     private void associateUI() {
         emailEditText = findViewById(R.id.email);
         passwordEditText = findViewById(R.id.password);
         biometricCheckbox = findViewById(R.id.biometricCheckbox);
-
         loginButton = findViewById(R.id.loginButton);
+        fingerprintButton = findViewById(R.id.fingerprintButton);
+
         loginButton.setOnClickListener(view -> loginAction());
+        fingerprintButton.setOnClickListener(view -> forceBiometricLogin());
     }
 
     private void loginAction() {
@@ -122,14 +73,51 @@ public class LoginActivity extends AppCompatActivity {
         networkLogin(email, passwordCifrata);
     }
 
-    private void handleSuccessfulLogin(User user) {
-        showToast("Login effettuato con successo");
-        Intent intent = new Intent(this, HomeActivity.class);
-        intent.putExtra("user", user);
-        startActivity(intent);
-        finish();
+    private void configureBiometricAuthentication(User savedUser) {
+        Executor executor = ContextCompat.getMainExecutor(this);
+        BiometricPrompt biometricPrompt = new BiometricPrompt(LoginActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
+            @Override
+            public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
+                super.onAuthenticationError(errorCode, errString);
+                Toast.makeText(getApplicationContext(), "Errore di autenticazione biometrica: " + errString, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                Toast.makeText(getApplicationContext(), "Autenticazione biometrica riuscita", Toast.LENGTH_SHORT).show();
+                networkLogin(savedUser.getEmail(), savedUser.getPassword());
+            }
+
+            @Override
+            public void onAuthenticationFailed() {
+                super.onAuthenticationFailed();
+                Toast.makeText(getApplicationContext(), "Authentication biometrica fallita", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        BiometricManager biometricManager = BiometricManager.from(this);
+        if (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
+                == BiometricManager.BIOMETRIC_SUCCESS) {
+            BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                    .setTitle("Biometric Authentication")
+                    .setSubtitle("Please authenticate to continue")
+                    .setAllowedAuthenticators(BiometricManager.Authenticators.BIOMETRIC_WEAK | BiometricManager.Authenticators.DEVICE_CREDENTIAL)
+                    .build();
+            biometricPrompt.authenticate(promptInfo);
+        } else {
+            showToast("Authentication not supported or not configured");
+        }
     }
 
+    private void forceBiometricLogin() {
+        User savedUser = sharedPreferencesManager.getUser();
+        if (savedUser != null && savedUser.getEmail() != null && savedUser.getPassword() != null) {
+            configureBiometricAuthentication(savedUser);
+        } else {
+            showToast("Nessun utente salvato per l'autenticazione biometrica");
+        }
+    }
 
     private void networkLogin(String email, String password) {
         QueryManager.doLogin(email, password, new LoginCallback() {
@@ -149,6 +137,14 @@ public class LoginActivity extends AppCompatActivity {
                 showToast("Login fallito: " + errorMessage);
             }
         });
+    }
+
+    private void handleSuccessfulLogin(User user) {
+        showToast("Login effettuato con successo");
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra("user", user);
+        startActivity(intent);
+        finish();
     }
 
     private void showToast(String message) {
