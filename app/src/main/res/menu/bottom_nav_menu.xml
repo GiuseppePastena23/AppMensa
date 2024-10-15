@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/user_icon_placeholder"
+    android:title="Home" />
+    <item
+        android:id="@+id/nav_search"
+        android:icon="@drawable/user_icon_placeholder"
+    android:title="Cerca" />
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/user_icon_placeholder"
+    android:title="Impostazioni" />
+</menu>

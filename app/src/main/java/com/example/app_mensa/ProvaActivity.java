@@ -1,9 +1,11 @@
 package com.example.app_mensa;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +18,8 @@ import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.common.BitMatrix;
 
+import java.util.Random;
+
 public class ProvaActivity extends AppCompatActivity {
     private SharedPreferencesManager sharedPreferencesManager;
     private TextView textView;
@@ -23,6 +27,9 @@ public class ProvaActivity extends AppCompatActivity {
     private Handler handler;
     private Runnable runnable;
     private User user;
+
+    private int tmpCodeRefreshTime = 2000;
+    private Random random = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,34 +48,44 @@ public class ProvaActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if (user != null) {
-                    QueryManager.doLogin(user.getEmail(), user.getPassword(), new LoginCallback() {
+                    QueryManager.getTemporaryString(new TemporaryStringCallback() {
                         @Override
-                        public void onSuccess(User updatedUser) {
-                            sharedPreferencesManager.clearUser();
-                            sharedPreferencesManager.saveUser(updatedUser);
-
-                            try {
-                                Bitmap qrCodeBitmap = generateQRCode(updatedUser.getTmpCode());
-                                textView.setText(String.valueOf("Saldo Disponibile:\n" + updatedUser.getCredito()));
-                                qrCodeImageView.setImageBitmap(qrCodeBitmap);
-                            } catch (WriterException e) {
-                                e.printStackTrace();
-                            }
+                        public void onSuccess(String temporaryString) {
+                            // Aggiorna l'interfaccia utente con la stringa temporanea
+                            runOnUiThread(() -> {
+                                textView.setText(temporaryString);
+                                Log.d("ProvaActivity", "Stringa temporanea ottenuta: " + temporaryString);
+                                textView.setTextColor(Color.rgb(random.nextInt(256), random.nextInt(256), random.nextInt(256)));
+                            });
                         }
 
                         @Override
                         public void onError(String errorMessage) {
-                            Toast.makeText(ProvaActivity.this, "Errore nel login: " + errorMessage, Toast.LENGTH_SHORT).show();
+                            // Gestisci l'errore
+                            runOnUiThread(() -> {
+                                Toast.makeText(ProvaActivity.this, "Errore: " + errorMessage, Toast.LENGTH_SHORT).show();
+                            });
                         }
                     });
                 }
 
-                handler.postDelayed(this, 5000);
+                handler.postDelayed(this, tmpCodeRefreshTime);
             }
         };
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         // Inizia il ciclo di login periodico
         handler.post(runnable);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Ferma il ciclo quando l'attività va in background
+        handler.removeCallbacks(runnable);
     }
 
     @Override
@@ -88,7 +105,7 @@ public class ProvaActivity extends AppCompatActivity {
         int bgColor = 0x000000;
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
-                bitmap.setPixel(x, y, bitMatrix.get(x, y) ? mainColor: bgColor);
+                bitmap.setPixel(x, y, bitMatrix.get(x, y) ? mainColor : bgColor);
             }
         }
 

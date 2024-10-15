@@ -1,4 +1,4 @@
-
+drop database if exists mensadb;
 create database if not exists mensadb;
 use mensadb;
 
@@ -10,9 +10,8 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(100) NOT NULL UNIQUE,
     password CHAR(64) NOT NULL,
     status ENUM('studente', 'lavoratore', 'docente', 'dottorando') NOT NULL,
-    telefono VARCHAR(20),
-    credito FLOAT DEFAULT 0,
-    tmp_code CHAR(32) NOT NULL DEFAULT 'new'
+    telefono VARCHAR(20) UNIQUE,
+    credito FLOAT DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS transazioni (

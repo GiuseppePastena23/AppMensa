@@ -15,8 +15,8 @@ public interface ApiService {
     @POST("/login")
     Call<ResponseBody> login(@Body Map<String, String> loginData);
 
-    @GET("/qr/{id}")
-    Call<ResponseBody> getQr(@Path("id") int id); // FIXME: NON MI RICORDO NON CAPISCO COME PRENDE IL CODICE DEL QR A CHE SERVE STA FUNZIONE??
+    @GET("/getTmpStr")
+    Call<ResponseBody> getTemporaryString();
 
     @POST("/addCredit")
     Call<ResponseBody> addCredit(@Body Map<String, Object> requestBody);

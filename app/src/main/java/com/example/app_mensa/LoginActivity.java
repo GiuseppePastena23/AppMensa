@@ -25,14 +25,9 @@ import java.util.concurrent.Executor;
 
 public class LoginActivity extends AppCompatActivity {
     private SharedPreferencesManager sharedPreferencesManager;
-    private boolean debug = false;
+    private User user;
 
-    // Biometria
-    private Executor executor;
-    private BiometricPrompt biometricPrompt;
-    private BiometricPrompt.PromptInfo promptInfo;
-
-
+    // GUI
     private EditText emailEditText, passwordEditText;
     private CheckBox biometricCheckbox;
     private Button loginButton;
@@ -45,30 +40,30 @@ public class LoginActivity extends AppCompatActivity {
         sharedPreferencesManager = new SharedPreferencesManager(this);
         setContentView(R.layout.activity_login);
         associateUI();
-
-
-
         User savedUser = sharedPreferencesManager.getUser();
+
+        BiometricPrompt.PromptInfo promptInfo = null;
         if (savedUser != null && savedUser.getEmail() != null && savedUser.getPassword() != null) {
-            executor = ContextCompat.getMainExecutor(this);
-            biometricPrompt = new BiometricPrompt(LoginActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
+            // Biometria
+            Executor executor = ContextCompat.getMainExecutor(this);
+            BiometricPrompt biometricPrompt = new BiometricPrompt(LoginActivity.this, executor, new BiometricPrompt.AuthenticationCallback() {
                 @Override
                 public void onAuthenticationError(int errorCode, @NonNull CharSequence errString) {
                     super.onAuthenticationError(errorCode, errString);
-                    Toast.makeText(getApplicationContext(), "Authentication error: " + errString, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Errore di autenticazione biometrica: " + errString, Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                     super.onAuthenticationSucceeded(result);
-                    Toast.makeText(getApplicationContext(), "Authentication succeeded!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Autenticazione biometrica riuscita", Toast.LENGTH_SHORT).show();
                     networkLogin(savedUser.getEmail(), savedUser.getPassword());
                 }
 
                 @Override
                 public void onAuthenticationFailed() {
                     super.onAuthenticationFailed();
-                    Toast.makeText(getApplicationContext(), "Authentication failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Authentication biometrica fallita", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -108,20 +103,11 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.password);
         biometricCheckbox = findViewById(R.id.biometricCheckbox);
 
-
-
         loginButton = findViewById(R.id.loginButton);
         loginButton.setOnClickListener(view -> loginAction());
     }
 
     private void loginAction() {
-        // Gestione login di debug
-        if (debug) {
-            showToast("DEBUG FAST LOGIN");
-            handleSuccessfulLogin();
-            return;
-        }
-
         // Ottieni i dati inseriti dall'utente
         String email = emailEditText.getText().toString().trim();
         String passwordChiara = passwordEditText.getText().toString().trim();
@@ -136,12 +122,14 @@ public class LoginActivity extends AppCompatActivity {
         networkLogin(email, passwordCifrata);
     }
 
-    private void handleSuccessfulLogin() {
+    private void handleSuccessfulLogin(User user) {
         showToast("Login effettuato con successo");
         Intent intent = new Intent(this, HomeActivity.class);
+        intent.putExtra("user", user);
         startActivity(intent);
         finish();
     }
+
 
     private void networkLogin(String email, String password) {
         QueryManager.doLogin(email, password, new LoginCallback() {
@@ -152,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     sharedPreferencesManager.clearUser();
                 }
-                handleSuccessfulLogin();
+                handleSuccessfulLogin(user);
             }
 
             @Override

@@ -109,6 +109,46 @@ public class QueryManager {
         });
     }
 
+    public static void getTemporaryString(TemporaryStringCallback callback) {
+        ApiService apiService = RetrofitClient.getApiService();
+
+        Call<ResponseBody> call = apiService.getTemporaryString(); // Assicurati di avere questo metodo nell'ApiService
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    try {
+                        String responseBody = response.body().string();
+                        // Parsing del JSON
+                        JSONObject jsonObject = new JSONObject(responseBody);
+                        String tmpCode = jsonObject.optString("tmpCode"); // Usa "tmpCode"
+
+                        if (!tmpCode.isEmpty()) {
+                            callback.onSuccess(tmpCode);
+                        } else {
+                            callback.onError("Stringa temporanea non trovata nella risposta");
+                        }
+                    } catch (IOException | JSONException e) {
+                        e.printStackTrace();
+                        callback.onError("Errore nel parsing della risposta: " + e.getMessage());
+                    }
+                } else {
+                    String errorMessage = "Errore: " + response.code() + " " + response.message();
+                    callback.onError(errorMessage);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+                callback.onError("Errore di rete: " + t.getMessage());
+            }
+        });
+    }
+
+
+
 
     private static void parseResponse(ResponseBody responseBody, LoginCallback callback) {
         try {

@@ -17,11 +17,10 @@ public class User implements Serializable {
     private String status;
     private String telefono;
     private float credito;
-    private String tmpCode;
 
     public User() {}
 
-    public User(int id, String nome, String cognome, String cf, String email, String password, String telefono, String status, float credito, String tmpCode) {
+    public User(int id, String nome, String cognome, String cf, String email, String password, String telefono, String status, float credito) {
         this.id = id;
         this.nome = nome;
         this.cognome = cognome;
@@ -31,7 +30,6 @@ public class User implements Serializable {
         this.telefono = telefono;
         this.status = status;
         this.credito = credito;
-        this.tmpCode = tmpCode;
     }
 
     public int getId() {
@@ -106,14 +104,6 @@ public class User implements Serializable {
         this.credito = credito;
     }
 
-    public String getTmpCode() {
-        return tmpCode;
-    }
-
-    public void setTmpCode(String tmpCode) {
-        this.tmpCode = tmpCode;
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -126,7 +116,6 @@ public class User implements Serializable {
                 ", status='" + status + '\'' +
                 ", telefono='" + telefono + '\'' +
                 ", credito=" + credito +
-                ", tmpCode='" + tmpCode + '\'' +
                 '}';
     }
 
@@ -140,8 +129,7 @@ public class User implements Serializable {
         String status = json.getString("status");
         String telefono = json.getString("telefono");
         float credito = (float) json.getDouble("credito");
-        String tmpCode = json.getString("tmp_code");
 
-        return new User(id, nome, cognome, cf, email, password, telefono, status, credito, tmpCode);
+        return new User(id, nome, cognome, cf, email, password, telefono, status, credito);
     }
 }

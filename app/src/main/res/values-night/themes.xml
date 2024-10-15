@@ -6,4 +6,8 @@
     </style>
 
     <color name="logo_color">#FFFFFF</color>
+
+    <color name="qr_code_color_dark">#FFFFFFFF</color>
+    <color name="qr_code_color_light">#FF000000</color>
+
 </resources>

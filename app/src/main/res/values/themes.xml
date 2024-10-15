@@ -8,4 +8,8 @@
     <style name="Theme.App_Mensa" parent="Base.Theme.App_Mensa" />
 
     <color name="logo_color">#000000</color>
+
+    <color name="qr_code_color_dark">#FF000000</color>
+    <color name="qr_code_color_light">#FFFFFFFF</color>
+
 </resources>
