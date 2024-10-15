@@ -23,16 +23,16 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".LoginActivity" android:label="Login"/>
-        <activity android:name=".HomeActivity" android:label="Home" />
-        <activity android:name=".WalletActivity" android:label="Wallet"/>
-        <activity android:name=".SettingsActivity" android:label="Settings"/>
-        <activity android:name=".MenuActivity" android:label="Menu"/>
-        <activity android:name=".AnagraficaActivity" android:label="Anagrafica"/>
-        <activity android:name=".ProvaActivity" android:label="Prova"/>
-        <activity android:name=".ProvaActivityOne" android:label="Prova"/>
-        <activity android:name=".AddCreditActivity" android:label="AddCredit"/>
-        <activity android:name=".TransactionHistoryActivity" android:label="History"/>
+        <activity android:name=".LoginActivity" android:label="Login" android:screenOrientation="portrait"/>
+        <activity android:name=".HomeActivity" android:label="Home"  android:screenOrientation="portrait"/>
+        <activity android:name=".WalletActivity" android:label="Wallet" android:screenOrientation="portrait"/>
+        <activity android:name=".SettingsActivity" android:label="Settings" android:screenOrientation="portrait"/>
+        <activity android:name=".MenuActivity" android:label="Menu" android:screenOrientation="portrait"/>
+        <activity android:name=".AnagraficaActivity" android:label="Anagrafica" android:screenOrientation="portrait"/>
+        <activity android:name=".ProvaActivity" android:label="Prova" android:screenOrientation="portrait"/>
+        <activity android:name=".ProvaActivityOne" android:label="Prova" android:screenOrientation="portrait"/>
+        <activity android:name=".AddCreditActivity" android:label="AddCredit" android:screenOrientation="portrait"/>
+        <activity android:name=".TransactionHistoryActivity" android:label="History" android:screenOrientation="portrait"/>
 
     </application>
 

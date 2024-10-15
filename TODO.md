@@ -1,13 +1,11 @@
 # workflow applicazione
-forzare portrait
 adattamento light/dark theme
 
 ## primo avvio
-1. pulsante per forzare il check biometrico
-2. lingua
-3. conferma pagamento avvenuto con polling
-4. invio notifiche quando si effettua una transazione o low money
-5. contatta l'assistenza
+1. lingua
+2. conferma pagamento avvenuto con polling
+3. invio notifiche quando si effettua una transazione o low money
+4. contatta l'assistenza
 
 
 ## idee
