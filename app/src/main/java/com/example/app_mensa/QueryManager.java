@@ -44,7 +44,7 @@ public class QueryManager {
         });
     }
 
-    public static void addCredit(int id, float value, CreditCallback callback) {
+    public static void createNewTransaction(int id, float value, CreditCallback callback) {
         ApiService apiService = RetrofitClient.getApiService();
 
         // Prepare the request body
@@ -53,7 +53,7 @@ public class QueryManager {
         requestBody.put("value", value);
 
         // Make the API call
-        Call<ResponseBody> call = apiService.addCredit(requestBody);
+        Call<ResponseBody> call = apiService.createNewTransaction(requestBody);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

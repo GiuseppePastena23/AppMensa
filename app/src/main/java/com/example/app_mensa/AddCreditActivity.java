@@ -99,7 +99,8 @@ public class AddCreditActivity extends AppCompatActivity {
     }
 
     private void addCreditToUser(int userId, float value) {
-        QueryManager.addCredit(userId, value, new CreditCallback() {
+        QueryManager.createNewTransaction(userId, value, new CreditCallback() {
+
             @Override
             public void onSuccess(String responseBody) {
                 Toast.makeText(getApplicationContext(), "Credit added successfully!", Toast.LENGTH_SHORT).show();

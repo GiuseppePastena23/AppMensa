@@ -141,7 +141,12 @@ public class LoginActivity extends AppCompatActivity {
 
     private void handleSuccessfulLogin(User user) {
         showToast("Login effettuato con successo");
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent;
+        if(user.getStatus().equals("lavoratore")){
+            intent = new Intent(this, WorkerActivity.class);
+        } else {
+            intent = new Intent(this, HomeActivity.class);
+        }
         intent.putExtra("user", user);
         startActivity(intent);
         finish();

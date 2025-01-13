@@ -73,7 +73,7 @@ def get_transactions(id):
             cur.close()
 
 
-@app.route('/addCredit', methods=['POST'])
+@app.route('/newTransaction', methods=['POST'])
 def add_credit():
     try:
         user_id = request.json.get('id')

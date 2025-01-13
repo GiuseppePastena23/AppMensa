@@ -18,8 +18,8 @@ public interface ApiService {
     @GET("/getTmpStr")
     Call<ResponseBody> getTemporaryString();
 
-    @POST("/addCredit")
-    Call<ResponseBody> addCredit(@Body Map<String, Object> requestBody);
+    @POST("/newTransaction")
+    Call<ResponseBody> createNewTransaction(@Body Map<String, Object> requestBody);
 
     @GET("/transactions/{id}")
     Call<List<Transaction>> getTransactionById(@Path("id") int id);

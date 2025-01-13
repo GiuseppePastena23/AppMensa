@@ -29,8 +29,7 @@
         <activity android:name=".SettingsActivity" android:label="Settings" android:screenOrientation="portrait"/>
         <activity android:name=".MenuActivity" android:label="Menu" android:screenOrientation="portrait"/>
         <activity android:name=".AnagraficaActivity" android:label="Anagrafica" android:screenOrientation="portrait"/>
-        <activity android:name=".ProvaActivity" android:label="Prova" android:screenOrientation="portrait"/>
-        <activity android:name=".ProvaActivityOne" android:label="Prova" android:screenOrientation="portrait"/>
+        <activity android:name=".WorkerActivity" android:label="Worker"></activity>
         <activity android:name=".AddCreditActivity" android:label="AddCredit" android:screenOrientation="portrait"/>
         <activity android:name=".TransactionHistoryActivity" android:label="History" android:screenOrientation="portrait"/>
 
