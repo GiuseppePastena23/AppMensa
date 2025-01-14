@@ -1,4 +1,4 @@
-package com.example.app_mensa;
+package com.example.app_mensa.util;
 
 import com.example.app_mensa.dao.User;
 import com.google.gson.Gson;

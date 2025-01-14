@@ -1,4 +1,4 @@
-package com.example.app_mensa;
+package com.example.app_mensa.util;
 
 import android.view.LayoutInflater;
 import android.view.View;

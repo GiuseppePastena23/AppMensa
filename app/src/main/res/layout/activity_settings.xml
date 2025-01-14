@@ -41,7 +41,7 @@
             >
 
             <Button
-                android:id="@+id/anagrafica_btn"
+                android:id="@+id/datiPersonali_btn"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:text="Anagrafica"
@@ -49,32 +49,17 @@
                 >
             </Button>
 
+
             <Button
-                android:id="@+id/cards_btn"
+                android:id="@+id/elencoMovimenti_btn"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:text="Gestione carte"
+                android:text="Elenco Movimenti"
                 android:layout_marginBottom="20dp"
                 >
 
             </Button>
-            <Button
-                android:id="@+id/status_btn"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="Stato Attivazione???"
-                android:layout_marginBottom="20dp"
-                >
 
-            </Button>
-            <Button
-                android:id="@+id/auth_btn"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:text="Autenticazione???">
-
-
-            </Button>
 
             <Button
                 android:id="@+id/exit_btn"

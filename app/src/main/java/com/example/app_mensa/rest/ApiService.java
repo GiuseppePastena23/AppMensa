@@ -1,4 +1,4 @@
-package com.example.app_mensa;
+package com.example.app_mensa.rest;
 
 import com.example.app_mensa.dao.Transaction;
 
@@ -14,9 +14,6 @@ import java.util.List;
 public interface ApiService {
     @POST("/login")
     Call<ResponseBody> login(@Body Map<String, String> loginData);
-
-    @GET("/getTmpStr")
-    Call<ResponseBody> getTemporaryString();
 
     @POST("/newTransaction")
     Call<ResponseBody> createNewTransaction(@Body Map<String, Object> requestBody);

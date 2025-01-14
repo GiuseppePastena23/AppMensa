@@ -1,4 +1,4 @@
-package com.example.app_mensa;
+package com.example.app_mensa.callback;
 import com.example.app_mensa.dao.User;
 
 public interface LoginCallback {

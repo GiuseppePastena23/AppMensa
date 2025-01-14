@@ -1,22 +1,16 @@
-package com.example.app_mensa;
+package com.example.app_mensa.activities;
 
+import com.example.app_mensa.rest.QueryManager;
+import com.example.app_mensa.R;
+import com.example.app_mensa.util.SharedPreferencesManager;
+import com.example.app_mensa.callback.LoginCallback;
 import com.example.app_mensa.dao.User;
-import com.google.zxing.WriterException;
 
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.sql.Date;
 
 public class AnagraficaActivity extends AppCompatActivity {
 

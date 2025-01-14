@@ -1,4 +1,4 @@
-package com.example.app_mensa;
+package com.example.app_mensa.rest;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

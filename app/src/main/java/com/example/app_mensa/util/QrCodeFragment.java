@@ -1,4 +1,4 @@
-package com.example.app_mensa;
+package com.example.app_mensa.util;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -10,14 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.app_mensa.R;
 import com.example.app_mensa.dao.User;
+import com.example.app_mensa.rest.QueryManager;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.QRCodeWriter;
@@ -59,7 +59,7 @@ public class QrCodeFragment extends Fragment {
             @Override
             public void run() {
                 if (user != null) {
-                    QueryManager.getTemporaryString(new TemporaryStringCallback() {
+
                         @Override
                         public void onSuccess(String temporaryString) {
                             requireActivity().runOnUiThread(() -> {

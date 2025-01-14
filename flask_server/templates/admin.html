@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <script>
+        // Fetch the first 10 users
+        function getUsers() {
+            fetch('/data/')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    displayData(data);
+                })
+                .catch(error => console.log('Error:', error));
+        }
+
+        // Fetch user transactions by ID
+        function getUserTransactions() {
+            const userId = document.getElementById("userId").value;
+            if(userId) {
+                fetch(`/transactions/${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        displayData(data);
+                    })
+                    .catch(error => console.log('Error:', error));
+            } else {
+                alert("Please enter a valid User ID.");
+            }
+        }
+
+        // Function to display data on the page
+        function displayData(data) {
+            let output = '<ul>';
+            data.forEach(item => {
+                output += `<li>${JSON.stringify(item)}</li>`;
+            });
+            output += '</ul>';
+            document.getElementById("output").innerHTML = output;
+        }
+
+        // Send new transaction request
+        function addTransaction() {
+            const userId = document.getElementById("userId").value;
+            const value = document.getElementById("value").value;
+
+            if (userId && value) {
+                fetch('/newTransaction', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id: userId, value: value })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    alert("Transaction added!");
+                })
+                .catch(error => console.log('Error:', error));
+            } else {
+                alert("Please fill both User ID and Value.");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+
+    <h2>Get First 10 Users</h2>
+    <button onclick="getUsers()">Get Users</button>
+
+    <h2>Get User Transactions</h2>
+    <input type="number" id="userId" placeholder="Enter User ID" />
+    <button onclick="getUserTransactions()">Get Transactions</button>
+
+    <h2>Add Credit Transaction</h2>
+    <input type="number" id="userId" placeholder="Enter User ID" />
+    <input type="number" id="value" placeholder="Enter Value" />
+    <button onclick="addTransaction()">Add Credit</button>
+
+    
+
+    <h2>Output</h2>
+    <div id="output">
+        <!-- Data will be displayed here -->
+    </div>
+</body>
+</html>

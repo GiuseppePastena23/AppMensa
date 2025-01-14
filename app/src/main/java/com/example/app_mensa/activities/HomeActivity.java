@@ -1,4 +1,4 @@
-package com.example.app_mensa;
+package com.example.app_mensa.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,18 +15,18 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.app_mensa.QrCodeFragment;
-import com.example.app_mensa.QueryManager;
+import com.example.app_mensa.util.QrCodeFragment;
+import com.example.app_mensa.rest.QueryManager;
 import com.example.app_mensa.R;
-import com.example.app_mensa.TransactionAdapter;
-import com.example.app_mensa.TransactionCallback;
+import com.example.app_mensa.util.TransactionAdapter;
 import com.example.app_mensa.dao.Transaction;
 import com.example.app_mensa.dao.User;
+import com.example.app_mensa.callback.TransactionCallback;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorkerActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     private User user;
     private List<Transaction> transactionList = new ArrayList<>();
@@ -71,9 +71,10 @@ public class WorkerActivity extends AppCompatActivity {
 
     private void associateUI() {
         welcomeText = findViewById(R.id.welcome_text);
-        welcomeText.setText(welcomeText.getText() + user.getNome() + " LAVORATORE");
+        welcomeText.setText(welcomeText.getText() + user.getNome());
 
-
+        creditoText = findViewById(R.id.credito_text);
+        creditoText.setText(creditoText.getText() + String.valueOf(user.getCredito()) + "€");
 
         QrCodeFragment qrCodeFragment = QrCodeFragment.newInstance(user);
         getSupportFragmentManager().beginTransaction()
@@ -98,7 +99,7 @@ public class WorkerActivity extends AppCompatActivity {
 
             @Override
             public void onError(String error) {
-                Toast.makeText(com.example.app_mensa.WorkerActivity.this, "Errore nel recupero delle transazioni: " + error, Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, "Errore nel recupero delle transazioni: " + error, Toast.LENGTH_SHORT).show();
             }
         });
     }

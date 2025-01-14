@@ -1,4 +1,4 @@
-package com.example.app_mensa;
+package com.example.app_mensa.activities;
 
 import androidx.annotation.NonNull;
 import androidx.biometric.BiometricManager;
@@ -17,6 +17,11 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.app_mensa.util.HashUtil;
+import com.example.app_mensa.rest.QueryManager;
+import com.example.app_mensa.R;
+import com.example.app_mensa.util.SharedPreferencesManager;
+import com.example.app_mensa.callback.LoginCallback;
 import com.example.app_mensa.dao.User;
 
 import java.util.concurrent.Executor;

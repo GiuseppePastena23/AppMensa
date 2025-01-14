@@ -1,4 +1,4 @@
-package com.example.app_mensa;
+package com.example.app_mensa.util;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

@@ -1,11 +1,10 @@
-package com.example.app_mensa;
+package com.example.app_mensa.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -15,6 +14,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.app_mensa.rest.QueryManager;
+import com.example.app_mensa.R;
+import com.example.app_mensa.util.SharedPreferencesManager;
+import com.example.app_mensa.callback.CreditCallback;
 import com.example.app_mensa.dao.User;
 
 public class AddCreditActivity extends AppCompatActivity {
