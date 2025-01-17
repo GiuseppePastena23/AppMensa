@@ -54,56 +54,10 @@ def get_all_users():
     except SQLAlchemyError as e:
         return jsonify({"error": str(e)}), 500
 
-# Endpoint per ottenere le transazioni di un utente
-@app.route('/transactions/<int:id>', methods=["GET"])
-def get_transactions(id):
-    try:
-        transactions = Transazione.query.filter_by(user_id=id).all()
-        if not transactions:
-            return jsonify({"error": "No transactions found"}), 404
-        return jsonify([{
-            'id': tx.id,
-            'user_id': tx.user_id,
-            'importo': tx.importo,
-            'modalita': tx.modalita
-        } for tx in transactions])
-    except SQLAlchemyError as e:
-        return jsonify({"error": str(e)}), 500
 
-# Endpoint per aggiungere una transazione
-@app.route('/newTransaction', methods=['POST'])
-def add_credit():
-    try:
-        user_id = request.json.get('id')
-        value = request.json.get('value')
-        
-
-        if not user_id or not value:
-            return jsonify({"error": "User ID or value is missing"}), 400
-
-        if int(value) < 0:
-            modalita = "pagamento alla mensa"
-        else:
-            modalita = "ricarica con carta di credito"
-
-
-
-        transaction = Transazione(user_id=user_id, importo=value, modalita=modalita)
-        user = User.query.get(user_id)
-
-        if user:
-            user.credito += float(value)
-            db.session.add(transaction)
-            db.session.commit()
-            return jsonify({"message": "Credit updated successfully"}), 200
-        else:
-            return jsonify({"error": "User not found"}), 404
-
-    except SQLAlchemyError as e:
-        return jsonify({"error": str(e)}), 500
 
 # Endpoint per il login
-@app.route('/login', methods=['POST'])
+@app.route('/getUser', methods=['POST'])
 def login():
     try:
         email = request.json.get('email')
@@ -124,14 +78,8 @@ def login():
             return jsonify({"error": "Invalid email or password"}), 401
 
     except SQLAlchemyError as e:
+        print(e)
         return jsonify({"error": str(e)}), 500
-
-# Generazione di un codice temporaneo
-tmp_code = "not yet generated"
-tmp_code_refresh_time = 30
-
-def generate_random_string():
-    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(32))
 
 
 
